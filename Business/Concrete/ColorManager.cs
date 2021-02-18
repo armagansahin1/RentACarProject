@@ -17,7 +17,7 @@ namespace Business.Concrete
 
         public void Add(Color entity)
         {
-            _colorManager.Add(entity);
+               _colorManager.Add(entity);
         }
 
         public void Delete(Color entity)

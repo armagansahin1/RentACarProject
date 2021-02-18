@@ -18,7 +18,15 @@ namespace Business.Concrete
 
         public void Add(Brand entity)
         {
-            _brandDal.Add(entity);
+            if (entity.BrandName.Length>0)
+            {
+                _brandDal.Add(entity);
+            }
+            else
+            {
+                Console.WriteLine("Brand Name's character must be longer than {0}",entity.BrandName.Length);
+            }
+            
         }
 
         public void Delete(Brand entity)
