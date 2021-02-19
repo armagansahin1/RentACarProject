@@ -25,20 +25,20 @@ namespace ConsoleUI
             carManager.Add(car1);
             foreach (var car in carManager.GetCarDetails())
             {
-                Console.WriteLine("Id = {0} - Car Name = {1} - Color = {2} - Model Year = {3} - Daily Price = {4}",
-                    car.CarId,car.BrandName,car.ColorName,car.ModelYear,car.DailyPrice); 
+                Console.WriteLine(" Car Name = {0} - Color = {1} - Model Year = {2} - Daily Price = {3}",
+                    car.BrandName,car.ColorName,car.ModelYear,car.DailyPrice); 
             }
             Console.WriteLine("---------Car Details From Brand Id----------------");
             foreach (var car in carManager.GetCarDetailsByBrandId(1))
             {
-                Console.WriteLine("Id = {0} - Car Name = {1} - Color = {2} - Model Year = {3} - Daily Price = {4}",
-                   car.CarId, car.BrandName, car.ColorName, car.ModelYear, car.DailyPrice);
+                Console.WriteLine(" Car Name = {0} - Color = {1} - Model Year = {2} - Daily Price = {3}",
+                    car.BrandName, car.ColorName, car.ModelYear, car.DailyPrice);
             }
             Console.WriteLine("---------Car Details From Color Id----------------");
             foreach (var car in carManager.GetCarDetailsByColorId(1))
             {
-                Console.WriteLine("Id = {0} - Car Name = {1} - Color = {2} - Model Year = {3} - Daily Price = {4}",
-                   car.CarId, car.BrandName, car.ColorName, car.ModelYear, car.DailyPrice);
+                Console.WriteLine(" Car Name = {0} - Color = {1} - Model Year = {2} - Daily Price = {3}",
+                    car.BrandName, car.ColorName, car.ModelYear, car.DailyPrice);
             }
 
 
