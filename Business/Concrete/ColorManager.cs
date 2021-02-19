@@ -6,33 +6,33 @@ using System.Text;
 
 namespace Business.Concrete
 {
-    public class ColorManager : IColorManager
+    public class ColorManager : IColorService
     {
-        IColorManager _colorManager;
+        IColorService _colorService;
 
-        public ColorManager(IColorManager colorManager)
+        public ColorManager(IColorService colorService)
         {
-            _colorManager = colorManager;
+            _colorService = colorService;
         }
 
         public void Add(Color entity)
         {
-               _colorManager.Add(entity);
+            _colorService.Add(entity);
         }
 
         public void Delete(Color entity)
         {
-            _colorManager.Delete(entity);
+            _colorService.Add(entity);
         }
 
         public List<Color> GetAll()
         {
-            return _colorManager.GetAll();
+            return _colorService.GetAll();
         }
 
         public void Update(Color entity)
         {
-            _colorManager.Update(entity);
+            _colorService.Add(entity);
         }
     }
 }

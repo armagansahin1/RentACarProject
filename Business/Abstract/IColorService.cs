@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Business.Abstract
 {
-    public interface IColorManager:IServiceRepository<Color>
+    public interface IColorService:IServiceRepository<Color>
     {
     }
 }
