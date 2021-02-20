@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constant;
+using Core.Results;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -15,24 +17,32 @@ namespace Business.Concrete
             _colorService = colorService;
         }
 
-        public void Add(Color entity)
+        public IResult Add(Color entity)
         {
-            _colorService.Add(entity);
+            
+                _colorService.Add(entity);
+                return new SuccessResult();
+            
+            
+            
+
         }
 
-        public void Delete(Color entity)
+        public IResult Delete(Color entity)
         {
-            _colorService.Add(entity);
+            _colorService.Delete(entity);
+            return new SuccessResult(Messages.DeleteMessage);
         }
 
-        public List<Color> GetAll()
+        public IDataResult<List<Color>> GetAll()
         {
-            return _colorService.GetAll();
+            return new SuccessDataResult<List<Color>>();
         }
 
-        public void Update(Color entity)
+        public IResult Update(Color entity)
         {
-            _colorService.Add(entity);
+            _colorService.Update(entity);
+            return new SuccessResult(Messages.UpdateMessage);
         }
     }
 }

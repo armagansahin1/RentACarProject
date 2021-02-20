@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constant;
+using Core.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
@@ -16,32 +18,36 @@ namespace Business.Concrete
             _brandDal = brandDal;
         }
 
-        public void Add(Brand entity)
+        public IResult Add(Brand entity)
         {
-            if (entity.BrandName.Length>=2)
+            int character = entity.BrandName.Length;
+            if (character>=2)
             {
                 _brandDal.Add(entity);
+                return new SuccessResult();
             }
             else
             {
-                Console.WriteLine("Brand Name's character must be longer than {0}",entity.BrandName.Length);
+                return new ErrorResult(Messages.CarCharacterError);
             }
             
         }
 
-        public void Delete(Brand entity)
+        public IResult Delete(Brand entity)
         {
             _brandDal.Delete(entity);
+            return new SuccessResult(Messages.DeleteMessage);
         }
 
-        public List<Brand> GetAll()
+        public IDataResult<List<Brand>> GetAll()
         {
-            return _brandDal.GetAll();
+            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll());
         }
 
-        public void Update(Brand entity)
+        public IResult Update(Brand entity)
         {
             _brandDal.Update(entity);
+            return new SuccessResult(Messages.UpdateMessage);
         }
     }
 }
