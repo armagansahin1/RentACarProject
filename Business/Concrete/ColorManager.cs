@@ -5,22 +5,24 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using DataAccess.Abstract;
 
 namespace Business.Concrete
 {
     public class ColorManager : IColorService
     {
-        IColorService _colorService;
+        private IColorDal _colorDal;
 
-        public ColorManager(IColorService colorService)
+        public ColorManager(IColorDal colorDal)
         {
-            _colorService = colorService;
+            _colorDal = colorDal;
         }
 
-        public IResult Add(Color entity)
+
+        public IResult Add(Color color)
         {
             
-                _colorService.Add(entity);
+                _colorDal.Add(color);
                 return new SuccessResult();
             
             
@@ -28,20 +30,20 @@ namespace Business.Concrete
 
         }
 
-        public IResult Delete(Color entity)
+        public IResult Delete(Color color)
         {
-            _colorService.Delete(entity);
+            _colorDal.Delete(color);
             return new SuccessResult(Messages.DeleteMessage);
         }
 
         public IDataResult<List<Color>> GetAll()
         {
-            return new SuccessDataResult<List<Color>>();
+            return new SuccessDataResult<List<Color>>(_colorDal.GetAll());
         }
 
-        public IResult Update(Color entity)
+        public IResult Update(Color color)
         {
-            _colorService.Update(entity);
+            _colorDal.Update(color);
             return new SuccessResult(Messages.UpdateMessage);
         }
     }

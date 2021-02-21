@@ -15,5 +15,6 @@ namespace Business.Constant
         public static string RentMessage = "Car Rented";
 
         public static string CantAddMessage = "Data can't Added!";
+        public static string EmailError = "It is not an Email adress";
     }
 }

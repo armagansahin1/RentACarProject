@@ -5,38 +5,39 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using DataAccess.Abstract;
 
 namespace Business.Concrete
 {
-    public class CustomerService : ICustomerService
+    public class CustomerManager : ICustomerService
     {
-        ICustomerService _customerService;
+        ICustomerDal _customerDal;
 
-        public CustomerService(ICustomerService customerService)
+        public CustomerManager(ICustomerDal customerService)
         {
-            _customerService = customerService;
+            _customerDal = customerService;
         }
 
         public IResult Add(Customer customer)
         {
-            _customerService.Add(customer);
+            _customerDal.Add(customer);
             return new SuccessResult(Messages.AddMessage);
         }
 
         public IResult Delete(Customer customer)
         {
-            _customerService.Delete(customer);
+            _customerDal.Delete(customer);
             return new SuccessResult(Messages.DeleteMessage);
         }
 
         public IDataResult<List<Customer>> GetAll()
         {
-            return new SuccessDataResult<List<Customer>>();
+            return new SuccessDataResult<List<Customer>>(_customerDal.GetAll());
         }
 
         public IResult Update(Customer customer)
         {
-            _customerService.Update(customer);
+            _customerDal.Update(customer);
             return new SuccessResult(Messages.UpdateMessage);
         }
     }
