@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using DataAccess.Abstract;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 
 namespace Business.Concrete
 {
@@ -17,7 +19,7 @@ namespace Business.Concrete
         {
             _customerDal = customerService;
         }
-
+        [ValidationAspect(typeof(CustomerValidator))]
         public IResult Add(Customer customer)
         {
             _customerDal.Add(customer);
