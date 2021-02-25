@@ -9,6 +9,7 @@ using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Core.Utilities.Business;
 
 namespace Business.Concrete
 {
@@ -24,14 +25,14 @@ namespace Business.Concrete
         public IResult Add(Rental rental)
         {
 
-            if (_rentalDal.GetAll().Exists(r => r.CarId == rental.CarId && r.ReturnDate == null))
+            IResult result = BusinessRules.Run(CheckRentability(rental.CarId));
+            if (result != null)
             {
-                return new ErrorResult(Messages.CantRentMessage);
+                return result;
             }
-
+            
             _rentalDal.Add(rental);
             return new SuccessResult(Messages.RentMessage);
-
         }
 
         public IResult Delete(Rental rental)
@@ -57,6 +58,14 @@ namespace Business.Concrete
             return new SuccessResult(Messages.UpdateMessage);
         }
 
-       
+        public IResult CheckRentability(int carId)
+        {
+            if (_rentalDal.GetAll().Exists(r => r.CarId == carId && r.ReturnDate == null))
+            {
+                return new ErrorResult(Messages.CantRentMessage);
+            }
+
+            return new SuccessResult();
+        }
     }
 }

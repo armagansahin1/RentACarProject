@@ -16,5 +16,6 @@ namespace Business.Constant
 
         public static string CantAddMessage = "Data can't Added!";
         public static string EmailError = "It is not an Email adress";
+        public static string ColorNameExists = "Color Name Exists";
     }
 }

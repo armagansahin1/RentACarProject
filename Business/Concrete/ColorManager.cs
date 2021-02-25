@@ -5,6 +5,7 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Core.Utilities.Business;
 using DataAccess.Abstract;
 
 namespace Business.Concrete
@@ -21,7 +22,11 @@ namespace Business.Concrete
 
         public IResult Add(Color color)
         {
-            
+            var result = BusinessRules.Run(CheckIfNameExists(color.ColorName));
+            if (result !=null)
+            {
+                return new ErrorResult();
+            }
                 _colorDal.Add(color);
                 return new SuccessResult();
             
@@ -45,6 +50,16 @@ namespace Business.Concrete
         {
             _colorDal.Update(color);
             return new SuccessResult(Messages.UpdateMessage);
+        }
+
+        public IResult CheckIfNameExists(string colorName)
+        {
+            if (_colorDal.GetAll(c => c.ColorName.ToUpper() == colorName.ToUpper()).Count <=1)
+            {
+                return new ErrorResult(Messages.ColorNameExists);
+            }
+
+            return new SuccessResult();
         }
     }
 }

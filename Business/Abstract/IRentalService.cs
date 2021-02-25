@@ -10,8 +10,8 @@ namespace Business.Abstract
    public interface IRentalService
     {
         
-        IResult Update(Rental entity);
-        IResult Delete(Rental entity);
+        IResult Update(Rental rental);
+        IResult Delete(Rental rental);
         IDataResult<List<Rental>> GetAll();
         IResult Add(Rental rental);
         IDataResult<List<RentalDetailDto>> GetRentedCarDetail();

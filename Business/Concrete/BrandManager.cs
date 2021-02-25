@@ -20,19 +20,13 @@ namespace Business.Concrete
             _brandDal = brandDal;
         }
         [ValidationAspect(typeof(BrandValidator))]
-        public IResult Add(Brand entity)
+        public IResult Add(Brand brand)
         {
-            int character = entity.BrandName.Length;
-            if (character>=2)
-            {
-                _brandDal.Add(entity);
+
+            _brandDal.Add(brand);
                 return new SuccessResult();
-            }
-            else
-            {
-                return new ErrorResult(Messages.CarCharacterError);
-            }
             
+
         }
 
         public IResult Delete(Brand entity)
@@ -51,5 +45,6 @@ namespace Business.Concrete
             _brandDal.Update(entity);
             return new SuccessResult(Messages.UpdateMessage);
         }
+        
     }
 }

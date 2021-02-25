@@ -23,14 +23,11 @@ namespace Business.Concrete
         [ValidationAspect(typeof(UserValidator))]
         public IResult Add(User user)
         {
-            ValidationTool.Validate(new UserValidator(),user);
-            bool emailCheck = user.Email.Contains("@");
-            if (emailCheck)
-            {
+            
+            
                 _userDal.Add(user);
                 return new SuccessResult(Messages.AddMessage);
-            }
-            return new ErrorResult(Messages.EmailError);
+            
         }
 
         public IResult Delete(User user)
