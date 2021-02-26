@@ -67,13 +67,13 @@ namespace Business.Concrete
             string fileType = imagePath.Substring(startValue);
             for (int i = 0; i < supportedFileTypes.Length; i++)
             {
-                if (fileType != supportedFileTypes[i])
+                if (fileType == supportedFileTypes[i])
                 {
-                    return new ErrorResult(Messages.InvalidFileType);
+                    return new SuccessResult();
                 }
             }
-
-            return new SuccessResult();
+            
+            return new ErrorResult(Messages.InvalidFileType);
 
         }
     }
