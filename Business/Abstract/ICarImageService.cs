@@ -10,8 +10,10 @@ namespace Business.Abstract
     {
         IResult Add(CarImage carImage);
         IResult Update(CarImage carImage);
-        IResult Delete(CarImage carImage);
+        IResult Delete(int carImageId);
        
         IDataResult<List<CarImage>> GetAll();
+       
+
     }
 }

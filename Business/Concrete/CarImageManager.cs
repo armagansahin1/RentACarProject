@@ -4,7 +4,10 @@ using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using Business.Constant;
+using Core.Utilities.Business;
 
 namespace Business.Concrete
 {
@@ -19,13 +22,21 @@ namespace Business.Concrete
 
         public IResult Add(CarImage carImage)
         {
+            var result = BusinessRules.Run(CheckNumberOfPicture(carImage.CarId));
+            if (result != null)
+            {
+                return result;
+            }
             _carImageDal.Add(carImage);
             return new SuccessResult();
         }
 
-        public IResult Delete(CarImage carImage)
+        public IResult Delete(int carImageId)
         {
-            throw new NotImplementedException();
+            CarImage carImage = _carImageDal.Get(ci => ci.CarImageId == carImageId);
+            File.Delete(@carImage.ImagePath);
+            _carImageDal.Delete(carImage);
+            return new SuccessResult();
         }
 
         public IDataResult<List<CarImage>> GetAll()
@@ -35,7 +46,18 @@ namespace Business.Concrete
 
         public IResult Update(CarImage carImage)
         {
-            throw new NotImplementedException();
+            _carImageDal.Update(carImage);
+            return new SuccessResult();
+        }
+
+        private IResult CheckNumberOfPicture(int carId)
+        {
+            if (_carImageDal.GetAll(ci => ci.CarId == carId).Count >= 5)
+            {
+                return new ErrorResult(Messages.NumberOfPictureError);
+            }
+
+            return new SuccessResult();
         }
     }
 }

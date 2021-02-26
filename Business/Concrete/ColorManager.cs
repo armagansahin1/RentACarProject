@@ -25,9 +25,9 @@ namespace Business.Concrete
             var result = BusinessRules.Run(CheckIfNameExists(color.ColorName));
             if (result !=null)
             {
-                return new ErrorResult();
+                return result;
             }
-                _colorDal.Add(color);
+            _colorDal.Add(color);
                 return new SuccessResult();
             
             
@@ -52,9 +52,9 @@ namespace Business.Concrete
             return new SuccessResult(Messages.UpdateMessage);
         }
 
-        public IResult CheckIfNameExists(string colorName)
+        private IResult CheckIfNameExists(string colorName)
         {
-            if (_colorDal.GetAll(c => c.ColorName.ToUpper() == colorName.ToUpper()).Count <=1)
+            if (_colorDal.GetAll(c => c.ColorName.ToUpper() == colorName.ToUpper()).Count >0)
             {
                 return new ErrorResult(Messages.ColorNameExists);
             }
