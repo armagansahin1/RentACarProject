@@ -22,7 +22,7 @@ namespace Business.Concrete
 
         public IResult Add(CarImage carImage)
         {
-            var result = BusinessRules.Run(CheckNumberOfPicture(carImage.CarId));
+            var result = BusinessRules.Run(CheckNumberOfPicture(carImage.CarId),CheckValidFileType(carImage.ImagePath));
             if (result != null)
             {
                 return result;
@@ -58,6 +58,23 @@ namespace Business.Concrete
             }
 
             return new SuccessResult();
+        }
+
+        private IResult CheckValidFileType(string imagePath)
+        {
+            string [] supportedFileTypes={".jpg",".jpeg","png"};
+            int startValue = imagePath.LastIndexOf(".");
+            string fileType = imagePath.Substring(startValue);
+            for (int i = 0; i < supportedFileTypes.Length; i++)
+            {
+                if (fileType != supportedFileTypes[i])
+                {
+                    return new ErrorResult(Messages.InvalidFileType);
+                }
+            }
+
+            return new SuccessResult();
+
         }
     }
 }

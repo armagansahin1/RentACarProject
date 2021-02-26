@@ -18,5 +18,6 @@ namespace Business.Constant
         public static string EmailError = "It is not an Email adress";
         public static string ColorNameExists = "Color Name Exists";
         public static string NumberOfPictureError = "The Number of Images Exceeded for this car !!!";
+        public static string InvalidFileType = "Invalid File Type";
     }
 }
