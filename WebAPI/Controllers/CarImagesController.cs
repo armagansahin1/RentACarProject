@@ -7,7 +7,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Hosting;
-using WebAPI.Models;
 using System.IO;
 using Core.Utilities;
 
@@ -39,47 +38,17 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add([FromForm] ImageUpload objectFile)
+        public IActionResult Add([FromForm] IFormFile imageFile,[FromForm]CarImage carImage)
         {
-            if (objectFile.Image.Length > 0)
+            var result = _carImageService.Add(imageFile,carImage);
+            
+            if (result.Success)
             {
-
-                string path = _webHostEnvironment.WebRootPath + "\\CarImages\\";
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-
-
-
-                string guidImageName = GuidCreator.Create(objectFile.Image.FileName);
-
-
-
-
-
-
-
-                using (FileStream fileStream = System.IO.File.Create(path + guidImageName))
-                { 
-                        
-                        var result = _carImageService.Add(new CarImage{CarId = objectFile.CarId,Date = DateTime.Now,ImagePath = path+guidImageName});
-                    if (result.Success)
-                    {
-                            objectFile.Image.CopyTo(fileStream);
-                            fileStream.Flush();
-                            return Ok(result);
-                    }
-
-                    return BadRequest(result);
-                }
-                
+                return Ok(result);
             }
 
+            return BadRequest(result);
 
-            
-            
-            return BadRequest();
         }
 
 
@@ -94,8 +63,18 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
+        [HttpPost("update")]
+        public IActionResult Update(CarImage carImage)
+        {
+            var result = _carImageService.Update(carImage);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
 
-        
+            return BadRequest(result);
+        }
+
 
     }
 }

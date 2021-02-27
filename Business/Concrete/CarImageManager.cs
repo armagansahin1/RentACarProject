@@ -8,6 +8,8 @@ using System.IO;
 using System.Text;
 using Business.Constant;
 using Core.Utilities.Business;
+using Core.Utilities.FileOperations;
+using Microsoft.AspNetCore.Http;
 
 namespace Business.Concrete
 {
@@ -20,8 +22,10 @@ namespace Business.Concrete
             _carImageDal = carImageDal;
         }
 
-        public IResult Add(CarImage carImage)
+        public IResult Add(IFormFile imageFile,CarImage carImage)
         {
+            carImage.Date=DateTime.Now;
+            carImage.ImagePath = FileOperations.Add(imageFile);
             var result = BusinessRules.Run(CheckNumberOfPicture(carImage.CarId),CheckValidFileType(carImage.ImagePath));
             if (result != null)
             {
@@ -34,7 +38,7 @@ namespace Business.Concrete
         public IResult Delete(int carImageId)
         {
             CarImage carImage = _carImageDal.Get(ci => ci.CarImageId == carImageId);
-            File.Delete(@carImage.ImagePath);
+            FileOperations.DeleteFile(@carImage.ImagePath);
             _carImageDal.Delete(carImage);
             return new SuccessResult();
         }
@@ -46,6 +50,12 @@ namespace Business.Concrete
 
         public IResult Update(CarImage carImage)
         {
+            carImage.Date=DateTime.Now;
+            var result = BusinessRules.Run(CheckNumberOfPicture(carImage.CarId));
+            if (result != null)
+            {
+                return result;
+            }
             _carImageDal.Update(carImage);
             return new SuccessResult();
         }
