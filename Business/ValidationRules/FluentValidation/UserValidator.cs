@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using FluentValidation.Validators;
+using Core.Entities.Concrete;
 
 namespace Business.ValidationRules.FluentValidation
 {
@@ -14,8 +15,7 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(u => u.Email).Must(ValidMail);
             RuleFor(u => u.FirstName).NotEmpty();
             RuleFor(u => u.LastName).NotEmpty();
-            RuleFor(u => u.Password).NotEmpty();
-            RuleFor(u => u.Password).MinimumLength(6).MaximumLength(12);
+          
         }
 
         private bool ValidMail(string arg)

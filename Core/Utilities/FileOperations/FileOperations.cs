@@ -47,7 +47,7 @@ namespace Core.Utilities.FileOperations
 
         public static void DeleteFile(string filePath)
         {
-            if (Directory.Exists(filePath))
+            if (File.Exists(@filePath))
             {
                 File.Delete(@filePath);
             }

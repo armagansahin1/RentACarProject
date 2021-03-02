@@ -29,7 +29,7 @@ namespace DataAccess.Concrete.EntityFramework
                              on rental.CustomerId equals cus.CustomerId
 
                              join us in context.Users
-                             on cus.UserId equals us.UserId
+                             on cus.UserId equals us.Id
                              
                              select new RentalDetailDto
                              {

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Core.Entities.Concrete;
+using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace Business.Constant
@@ -19,5 +21,14 @@ namespace Business.Constant
         public static string ColorNameExists = "Color Name Exists";
         public static string NumberOfPictureError = "The Number of Images Exceeded for this car !!!";
         public static string InvalidFileType = "Invalid File Type";
+        internal static string UserNotFound = "User doesn't exist !!!";
+
+        public static string PasswordError = "Password is wrong !!!";
+
+        public static string SuccessfulLogin = "Successful Login";
+        internal static string UserExistError = "User already exist!!!";
+        internal static string UserRegistered = "The user has been successfully registered in the system";
+        internal static string AccessTokenCreated = "Access Token has been created";
+        internal static string AuthorizationDenied = "You have no authorization !!!";
     }
 }

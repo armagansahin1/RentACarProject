@@ -9,6 +9,7 @@ using System.Text;
 using Business.ValidationRules.FluentValidation;
 using Core.CrossCuttingConcerns;
 using Core.Aspects.Autofac.Validation;
+using Core.Entities.Concrete;
 
 namespace Business.Concrete
 {
@@ -39,6 +40,18 @@ namespace Business.Concrete
         public IDataResult<List<User>> GetAll()
         {
             return new SuccessDataResult<List<User>>(_userDal.GetAll());
+        }
+
+        public User GetByMail(string email)
+        {
+            
+            return _userDal.Get(u => u.Email == email);
+
+        }
+
+        public List<OperationClaim> GetClaims(User user)
+        {
+            return _userDal.GetClaim(user);
         }
 
         public IResult Update(User user)

@@ -48,9 +48,12 @@ namespace Business.Concrete
            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll());
         }
 
-        public IResult Update(CarImage carImage)
+        public IResult Update(IFormFile imageFile,CarImage carImage)
         {
+            var deleteToImageFile = _carImageDal.Get(ci => ci.CarImageId == carImage.CarImageId);
+            FileOperations.DeleteFile(deleteToImageFile.ImagePath);
             carImage.Date=DateTime.Now;
+            carImage.ImagePath = FileOperations.Add(imageFile);
             var result = BusinessRules.Run(CheckNumberOfPicture(carImage.CarId));
             if (result != null)
             {
