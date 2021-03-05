@@ -8,6 +8,7 @@ namespace Core.Utilities.FileOperations
 {
     public class FileOperations
     {
+        
         public static string Add(IFormFile imageFile)
         {
 
@@ -15,7 +16,7 @@ namespace Core.Utilities.FileOperations
 
             try
             {
-                string path = @"C:\Users\armağan\source\repos\RentACarProject\CarImages\";
+                string path = @"CarImages/";
                 string guidImageName = GuidCreator.Create(imageFile.FileName);
                 if (imageFile.Length > 0)
                 {

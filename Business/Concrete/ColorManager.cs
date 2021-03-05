@@ -48,13 +48,19 @@ namespace Business.Concrete
 
         public IResult Update(Color color)
         {
+            var result = BusinessRules.Run(CheckIfNameExists(color.ColorName));
+            if (result != null)
+            {
+                return result;
+            }
             _colorDal.Update(color);
             return new SuccessResult(Messages.UpdateMessage);
         }
 
         private IResult CheckIfNameExists(string colorName)
         {
-            if (_colorDal.GetAll(c => c.ColorName.ToUpper() == colorName.ToUpper()).Count >0)
+            var result = _colorDal.GetAll(c => c.ColorName.ToUpper() == colorName.ToUpper());
+            if (result != null)
             {
                 return new ErrorResult(Messages.ColorNameExists);
             }

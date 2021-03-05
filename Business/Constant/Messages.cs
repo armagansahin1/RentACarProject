@@ -30,5 +30,6 @@ namespace Business.Constant
         internal static string UserRegistered = "The user has been successfully registered in the system";
         internal static string AccessTokenCreated = "Access Token has been created";
         internal static string AuthorizationDenied = "You have no authorization !!!";
+        internal static string BrandNameExistError = "The Brand Name you entered is found !!!";
     }
 }

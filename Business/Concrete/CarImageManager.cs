@@ -10,6 +10,8 @@ using Business.Constant;
 using Core.Utilities.Business;
 using Core.Utilities.FileOperations;
 using Microsoft.AspNetCore.Http;
+using Business.BusinessAspect.Autofac;
+using Core.Aspects.Autofac.Caching;
 
 namespace Business.Concrete
 {
@@ -21,7 +23,8 @@ namespace Business.Concrete
         {
             _carImageDal = carImageDal;
         }
-
+        [CacheRemoveAspect("ICarImageService.Get")]
+        [SecuredOperation("admin")]
         public IResult Add(IFormFile imageFile,CarImage carImage)
         {
             carImage.Date=DateTime.Now;
@@ -34,7 +37,8 @@ namespace Business.Concrete
             _carImageDal.Add(carImage);
             return new SuccessResult();
         }
-
+        [CacheRemoveAspect("ICarImageService.Get")]
+        [SecuredOperation("admin")]
         public IResult Delete(int carImageId)
         {
             CarImage carImage = _carImageDal.Get(ci => ci.CarImageId == carImageId);
@@ -42,12 +46,18 @@ namespace Business.Concrete
             _carImageDal.Delete(carImage);
             return new SuccessResult();
         }
-
+        [CacheAspect]
         public IDataResult<List<CarImage>> GetAll()
         {
            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll());
         }
-
+        [CacheAspect]
+        public IDataResult<List<CarImage>> GetByCarId(int carId)
+        {
+            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(b => b.CarId == carId));
+        }
+        [CacheRemoveAspect("ICarImageService.Get")]
+        [SecuredOperation("admin")]
         public IResult Update(IFormFile imageFile,CarImage carImage)
         {
             var deleteToImageFile = _carImageDal.Get(ci => ci.CarImageId == carImage.CarImageId);
