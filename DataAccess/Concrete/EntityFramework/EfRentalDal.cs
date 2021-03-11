@@ -38,6 +38,7 @@ namespace DataAccess.Concrete.EntityFramework
                                  CompanyName=cus.CompanyName,
                                  BrandName=b.BrandName,
                                  RentDate=rental.RentDate,
+                                 ReturnDate=rental.ReturnDate
                                  
                              };
                 return result.ToList();
