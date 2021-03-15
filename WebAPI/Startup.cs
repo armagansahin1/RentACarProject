@@ -81,7 +81,7 @@ namespace WebAPI
 
             app.UseAuthorization();
 
-            app.UseAuthorization();
+            
 
             app.UseEndpoints(endpoints =>
             {
