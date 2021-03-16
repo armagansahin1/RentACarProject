@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Core.Results;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,20 +9,18 @@ namespace Core.Utilities.FileOperations
 {
     public class FileOperations
     {
-        
-        public static string Add(IFormFile imageFile)
+
+        public static string Add(IFormFile imageFile,string defaultPath,string defaultFile)
         {
 
 
 
-            try
-            {
-                string path = @"CarImages/";
-                string guidImageName = GuidCreator.Create(imageFile.FileName);
-                if (imageFile.Length > 0)
+                
+                if (imageFile !=null && imageFile.Length > 0)
                 {
-
-                    if (!Directory.Exists(path))
+                string path = @"wwwroot/"+defaultPath;
+                string guidImageName = GuidCreator.Create(imageFile.FileName);
+                if (!Directory.Exists(path))
                     {
                         Directory.CreateDirectory(path);
                     }
@@ -32,29 +31,31 @@ namespace Core.Utilities.FileOperations
                         imageFile.CopyTo(fileStream);
                         fileStream.Flush();
                     }
-
-                }
-                return path + guidImageName;
+                return defaultPath + guidImageName;
             }
-            catch (Exception e)
+            else
             {
-                Console.WriteLine(e);
-                throw;
+                return defaultPath+defaultFile;
             }
-                
-
             
+
+
+
         }
 
-        public static void DeleteFile(string filePath)
+        public static void DeleteFile(string filePath,IResult defaulFileExist)
         {
-            if (File.Exists(@filePath))
+            if (!defaulFileExist.Success)
             {
-                File.Delete(@filePath);
+                if (File.Exists(@"wwwroot/" + filePath))
+                {
+                    File.Delete(@"wwwroot/" + filePath);
+                }
             }
+            
         }
     }
 }
-        
-    
+
+
 

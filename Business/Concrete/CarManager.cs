@@ -8,6 +8,7 @@ using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,9 +28,11 @@ namespace Business.Concrete
         [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
-
+            
                 _carDal.Add(car);
-                return new SuccessResult(Messages.AddMessage);
+            IFormFile formFile = null;
+            _carImageService.Add(formFile, new CarImage { CarId = car.CarId });
+            return new SuccessResult(Messages.AddMessage);
             
         }
 
