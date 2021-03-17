@@ -15,32 +15,27 @@ namespace Core.Utilities.FileOperations
 
 
 
-                
-                if (imageFile !=null && imageFile.Length > 0)
-                {
-                string path = @"wwwroot/"+defaultPath;
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                string path = @"wwwroot/" + defaultPath;
                 string guidImageName = GuidCreator.Create(imageFile.FileName);
                 if (!Directory.Exists(path))
-                    {
-                        Directory.CreateDirectory(path);
-                    }
+                {
+                    Directory.CreateDirectory(path);
+                }
 
 
-                    using (FileStream fileStream = System.IO.File.Create(path + guidImageName))
-                    {
-                        imageFile.CopyTo(fileStream);
-                        fileStream.Flush();
-                    }
+                using (FileStream fileStream = System.IO.File.Create(path + guidImageName))
+                {
+                    imageFile.CopyTo(fileStream);
+                    fileStream.Flush();
+                }
                 return defaultPath + guidImageName;
             }
             else
             {
-                return defaultPath+defaultFile;
+                return defaultPath + defaultFile;
             }
-            
-
-
-
         }
 
         public static void DeleteFile(string filePath,IResult defaulFileExist)

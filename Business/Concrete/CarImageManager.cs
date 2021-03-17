@@ -30,7 +30,7 @@ namespace Business.Concrete
             var defaultImageFile = _carImageDal.Get(ci =>ci.CarId==carImage.CarId && ci.ImagePath == DefaultImageFile.FilePath + DefaultImageFile.FileName);
             DeleteDefaultFile(defaultImageFile);
             carImage.Date=DateTime.Now;
-            carImage.ImagePath = FileOperations.Add(imageFile,DefaultImageFile.FilePath,DefaultImageFile.FileName);
+            carImage.ImagePath = FileOperations.Add(imageFile, DefaultImageFile.FilePath, DefaultImageFile.FileName);
             var result = BusinessRules.Run(CheckNumberOfImage(carImage.CarId),CheckValidFileType(carImage.ImagePath));
             if (result != null)
             {
@@ -44,10 +44,12 @@ namespace Business.Concrete
         public IResult Delete(CarImage carImage)
         {
             var imageToDelete = _carImageDal.Get(ci => ci.CarImageId == carImage.CarImageId);
-            var carImagesCount = _carImageDal.GetAll(ci => ci.CarId == imageToDelete.CarId).Count;
-            AddDefaultFile(carImagesCount,imageToDelete.CarId);
-            FileOperations.DeleteFile(@imageToDelete.ImagePath,CheckDefaultFile(imageToDelete.ImagePath));
+            FileOperations.DeleteFile(@imageToDelete.ImagePath, CheckDefaultFile(imageToDelete.ImagePath));
+
             _carImageDal.Delete(carImage);
+            var carImagesCount = _carImageDal.GetAll(ci => ci.CarId == imageToDelete.CarId).Count;
+            AddDefaultFile(carImagesCount, imageToDelete.CarId);
+
             return new SuccessResult();
         }
         [CacheAspect]
@@ -64,11 +66,11 @@ namespace Business.Concrete
         //[SecuredOperation("admin")]
         public IResult Update(IFormFile imageFile,CarImage carImage)
         {
-            var deleteToImageFile = _carImageDal.Get(ci => ci.CarImageId == carImage.CarImageId);
-            FileOperations.DeleteFile(deleteToImageFile.ImagePath,CheckDefaultFile(deleteToImageFile.ImagePath));
-            carImage.Date=DateTime.Now;
-            carImage.CarId = deleteToImageFile.CarId;
-            carImage.ImagePath = FileOperations.Add(imageFile,DefaultImageFile.FilePath,DefaultImageFile.FileName);
+            var imageToDelete = _carImageDal.Get(ci => ci.CarImageId == carImage.CarImageId);
+            FileOperations.DeleteFile(imageToDelete.ImagePath, CheckDefaultFile(imageToDelete.ImagePath));
+            carImage.Date = DateTime.Now;
+            carImage.CarId = imageToDelete.CarId;
+            carImage.ImagePath = FileOperations.Add(imageFile, DefaultImageFile.FilePath, DefaultImageFile.FileName);
             var result = BusinessRules.Run(CheckNumberOfImage(carImage.CarId));
             if (result != null)
             {
@@ -78,8 +80,17 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-       
-        
+
+        public IResult DeleteAllCarImage(int carId)
+        {
+            var carImages = _carImageDal.GetAll(ci => ci.CarId == carId);
+            foreach (var data in carImages)
+            {
+                _carImageDal.Delete(data);
+                FileOperations.DeleteFile(data.ImagePath, CheckDefaultFile(data.ImagePath));
+            }
+            return new SuccessResult();
+        }
         
         
         
@@ -113,7 +124,7 @@ namespace Business.Concrete
 
         private IResult CheckDefaultFile(string imagePath)
         {
-            if (imagePath==(DefaultImageFile.FilePath+DefaultImageFile.FileName))
+            if (imagePath == (DefaultImageFile.FilePath + DefaultImageFile.FileName))
             {
                 return new SuccessResult();
             }

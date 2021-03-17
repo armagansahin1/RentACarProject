@@ -38,6 +38,7 @@ namespace Business.Concrete
 
         public IResult Delete(Car car)
         {
+            _carImageService.DeleteAllCarImage(car.CarId);
             _carDal.Delete(car);
             return new SuccessResult(Messages.DeleteMessage);
         }
