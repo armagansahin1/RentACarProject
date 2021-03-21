@@ -45,6 +45,7 @@ namespace WebAPI.Controllers
         public IActionResult Delete(Rental rental)
         {
             var result = _rentalService.Delete(rental);
+            
             if (result.Success)
             {
                 return Ok(result);
@@ -72,5 +73,17 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+
+        [HttpPost("checkrentability")]
+        public IActionResult CheckRentabilty(Rental rental)
+        {
+            var result = _rentalService.CheckRentability(rental);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return Ok(result);
+        }
+
     }
 }

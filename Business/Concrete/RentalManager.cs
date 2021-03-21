@@ -16,21 +16,25 @@ namespace Business.Concrete
     public class RentalManager : IRentalService
     {
         IRentalDal _rentalDal;
+        IDebitCardService _debitCardService;
 
-        public RentalManager(IRentalDal rentalDal)
+       
+
+        public RentalManager(IRentalDal rentalDal, IDebitCardService debitCardService)
         {
             _rentalDal = rentalDal;
+            _debitCardService = debitCardService;
         }
         [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental rental)
         {
 
-            IResult result = BusinessRules.Run(CheckRentability(rental.CarId));
+            IResult result = BusinessRules.Run(CheckRentability(rental));
             if (result != null)
             {
                 return result;
             }
-            
+
             _rentalDal.Add(rental);
             return new SuccessResult(Messages.RentMessage);
         }
@@ -57,14 +61,34 @@ namespace Business.Concrete
             _rentalDal.Update(rental);
             return new SuccessResult(Messages.UpdateMessage);
         }
-
-        public IResult CheckRentability(int carId)
+        [ValidationAspect(typeof(RentalValidator))]
+        public IResult CheckRentability(Rental rental)
         {
-            if (_rentalDal.GetAll().Exists(r => r.CarId == carId && r.ReturnDate == null))
+            bool check=true;
+
+            var rentalList=_rentalDal.GetAll(r => r.CarId == rental.CarId);
+
+            foreach (var data in rentalList)
+            {
+                if(data.RentDate<=rental.RentDate && data.ReturnDate>=rental.RentDate)
+                {
+
+                    check = false;
+                    
+                }
+                if (data.ReturnDate >= rental.ReturnDate && data.RentDate <= rental.ReturnDate)
+                {
+                    check = false;
+                }
+                if(data.RentDate >= rental.RentDate && data.ReturnDate <= rental.ReturnDate)
+                {
+                    check = false;
+                }
+            }
+            if (!check)
             {
                 return new ErrorResult(Messages.CantRentMessage);
             }
-
             return new SuccessResult();
         }
     }
