@@ -11,19 +11,19 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DebitCardsController : ControllerBase
+    public class CreditCardsController : ControllerBase
     {
-        private IDebitCardService _debitCardService;
+        private ICreditCardService _creditCardService;
 
-        public DebitCardsController(IDebitCardService debitCardService)
+        public CreditCardsController(ICreditCardService creditCardService)
         {
-            _debitCardService = debitCardService;
+            _creditCardService = creditCardService;
         }
 
         [HttpPost("verify")]
-        public IActionResult VerifyPayment(DebitCard debitCard)
+        public IActionResult VerifyPayment(CreditCard creditCard)
         {
-            var result = _debitCardService.VerifyPayment(debitCard);
+            var result = _creditCardService.VerifyPayment(creditCard);
             if (result.Success)
             {
                 return Ok(result);

@@ -40,8 +40,8 @@ namespace Business.Aspect.Autofac
             builder.RegisterType<AuthManager>().As<IAuthService>().SingleInstance();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>().SingleInstance();
 
-            builder.RegisterType<DebitCardManager>().As<IDebitCardService>().SingleInstance();
-            builder.RegisterType<EfDebitCardDal>().As<IDebitCardDal>().SingleInstance();
+            builder.RegisterType<CreditCardManager>().As<ICreditCardService>().SingleInstance();
+            builder.RegisterType<EfCreditCardDal>().As<ICreditCardDal>().SingleInstance();
 
 
 

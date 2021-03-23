@@ -16,11 +16,11 @@ namespace Business.Concrete
     public class RentalManager : IRentalService
     {
         IRentalDal _rentalDal;
-        IDebitCardService _debitCardService;
+        ICreditCardService _debitCardService;
 
        
 
-        public RentalManager(IRentalDal rentalDal, IDebitCardService debitCardService)
+        public RentalManager(IRentalDal rentalDal, ICreditCardService debitCardService)
         {
             _rentalDal = rentalDal;
             _debitCardService = debitCardService;

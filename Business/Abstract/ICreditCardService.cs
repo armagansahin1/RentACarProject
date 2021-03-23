@@ -6,8 +6,8 @@ using System.Text;
 
 namespace Business.Abstract
 {
-    public interface IDebitCardService
+    public interface ICreditCardService
     {
-        IResult VerifyPayment(DebitCard debitCard);
+        IResult VerifyPayment(CreditCard debitCard);
     }
 }
