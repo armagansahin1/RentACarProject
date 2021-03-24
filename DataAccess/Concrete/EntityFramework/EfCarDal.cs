@@ -34,6 +34,7 @@ namespace DataAccess.Concrete.EntityFramework
                                  ColorName = cl.ColorName,
                                  ModelYear = c.ModelYear,
                                  DailyPrice = c.DailyPrice,
+                                 Description=c.Description,
                                  CarImages = context.CarImages.Where(image => image.CarId == c.CarId).ToList()
                              };
                 return result.ToList();

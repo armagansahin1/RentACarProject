@@ -8,6 +8,6 @@ namespace Business.Abstract
 {
     public interface ICreditCardService
     {
-        IResult VerifyPayment(CreditCard debitCard);
+        IResult VerifyPayment(CreditCard creditCard);
     }
 }
