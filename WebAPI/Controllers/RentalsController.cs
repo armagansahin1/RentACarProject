@@ -82,8 +82,28 @@ namespace WebAPI.Controllers
             {
                 return Ok(result);
             }
-            return Ok(result);
+            return BadRequest(result);
+        }
+        [HttpGet("inComingRents")]
+        public IActionResult GetInComingAppointments(int customerId)
+        {
+            var result = _rentalService.GetInComingAppointments(customerId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
 
+        [HttpGet("pastRents")]
+        public IActionResult PastAppointments(int customerId)
+        {
+            var result = _rentalService.PastAppointments(customerId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
     }
 }

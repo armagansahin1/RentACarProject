@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspect.Autofac;
 using Business.Constant;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -25,6 +26,8 @@ namespace Business.Concrete
             _carImageService = carImageService;
             _carDal = carManager;
         }
+
+        [SecuredOperation("admin")]
         [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
@@ -35,7 +38,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.AddMessage);
             
         }
-
+        [SecuredOperation("admin")]
         public IResult Delete(Car car)
         {
             _carImageService.DeleteAllCarImage(car.CarId);
@@ -48,18 +51,18 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll()); 
         }
 
-       
-
+        [SecuredOperation("admin")]
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Update(Car car)
         {
             _carDal.Update(car);
             return new SuccessResult(Messages.UpdateMessage);
         }
-        
 
-        public IDataResult<List<Car>> GetById(int carId)
+        
+        public IDataResult<Car> GetById(int carId)
         {
-             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.CarId == carId));
+             return new SuccessDataResult<Car>(_carDal.Get(c => c.CarId == carId));
         }
 
         public IDataResult<List<CarDetailDto>> GetCarDetails()
@@ -69,9 +72,10 @@ namespace Business.Concrete
 
   
 
-        public IDataResult<List<CarDetailDto>> GetCarDetailsByCarId(int carId)
+        public IDataResult<CarDetailDto> GetCarDetailsByCarId(int carId)
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c => c.CarId == carId));
+            var car = _carDal.GetCarDetails(c => c.CarId == carId);
+            return new SuccessDataResult<CarDetailDto>(car.Find(c=>c.CarId==carId));
         }
         public IDataResult<List<CarDetailDto>> GetCarDetailsByBrandId(int brandId)
         {

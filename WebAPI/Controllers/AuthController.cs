@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.Entities.Concrete;
 using Entities.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,9 +32,9 @@ public AuthController(IAuthService authService)
             var result=_authService.CreateAccessToken(userToLogin.Data);
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
         [HttpPost("register")]
         public IActionResult Register(UserForRegisterDto userForRegisterDto)
@@ -47,9 +48,19 @@ public AuthController(IAuthService authService)
             var result = _authService.CreateAccessToken(registerResult.Data);
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
+        }
+        [HttpPost("updatePassword")]
+        public IActionResult UpdatePassword(UserForRegisterDto userForRegisterDto,int userId)
+        {
+            var result = _authService.UpdatePassword(userForRegisterDto, userForRegisterDto.Password,userId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using Core.Utilities.Business;
 using DataAccess.Abstract;
+using Business.BusinessAspect.Autofac;
 
 namespace Business.Concrete
 {
@@ -19,7 +20,7 @@ namespace Business.Concrete
             _colorDal = colorDal;
         }
 
-
+        [SecuredOperation("admin")]
         public IResult Add(Color color)
         {
             var result = BusinessRules.Run(CheckIfNameExists(color.ColorName));
@@ -34,7 +35,7 @@ namespace Business.Concrete
             
 
         }
-
+        [SecuredOperation("admin")]
         public IResult Delete(Color color)
         {
             _colorDal.Delete(color);
@@ -45,7 +46,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<Color>>(_colorDal.GetAll());
         }
-
+        [SecuredOperation("admin")]
         public IResult Update(Color color)
         {
             var result = BusinessRules.Run(CheckIfNameExists(color.ColorName));
@@ -59,7 +60,7 @@ namespace Business.Concrete
 
         private IResult CheckIfNameExists(string colorName)
         {
-            var result = _colorDal.GetAll(c => c.ColorName.ToUpper() == colorName.ToUpper());
+            var result = _colorDal.GetAll(c => c.ColorName == colorName);
             if (result != null)
             {
                 return new ErrorResult(Messages.ColorNameExists);

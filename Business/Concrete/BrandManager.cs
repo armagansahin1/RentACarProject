@@ -24,8 +24,9 @@ namespace Business.Concrete
         {
             _brandDal = brandDal;
         }
+        
+        [SecuredOperation("admin")]
         [CacheRemoveAspect("IBrandService.Get")]
-        //[SecuredOperation("admin")]
         [ValidationAspect(typeof(BrandValidator))]
         public IResult Add(Brand brand)
         {
@@ -39,7 +40,7 @@ namespace Business.Concrete
             
 
         }
-        //[SecuredOperation("admin")]
+        [SecuredOperation("admin")]
         [CacheRemoveAspect("IBrandService.Get")]
         public IResult Delete(Brand entity)
         {
@@ -52,12 +53,12 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<Brand>>(_brandDal.GetAll());
         }
-        
+        [CacheAspect]
         public IDataResult<Brand> GetById(int brandId)
         {
             return new SuccessDataResult<Brand>(_brandDal.Get(b => b.BrandId == brandId));
         }
-        //[SecuredOperation("admin")]
+        [SecuredOperation("admin")]
         [CacheRemoveAspect("IBrandService.Get")]
         [ValidationAspect(typeof(BrandValidator))]
         public IResult Update(Brand brand)
@@ -74,7 +75,7 @@ namespace Business.Concrete
 
         private IResult CheckBrandName(string brandName)
         {
-            var result = _brandDal.Get(b => b.BrandName.ToUpper() == brandName.ToUpper());
+            var result = _brandDal.Get(b => b.BrandName== brandName);
             if(result != null)
             {
                 return new ErrorResult(Messages.BrandNameExistError);

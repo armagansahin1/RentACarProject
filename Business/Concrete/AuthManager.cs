@@ -23,7 +23,7 @@ namespace Business.Concrete
         public IDataResult<AccessToken> CreateAccessToken(User user)
         {
             var claims=_userService.GetClaims(user);
-            var accessToken=_tokenHelper.CreateToken(user, claims);
+            var accessToken=_tokenHelper.CreateToken(user, claims.Data);
             return new SuccessDataResult<AccessToken>(accessToken,Messages.AccessTokenCreated);
         }
 
@@ -34,12 +34,12 @@ namespace Business.Concrete
             {
                 return new ErrorDataResult<User>(Messages.UserNotFound);
             }
-            if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password,userToCheck.PasswordHash,userToCheck.PasswordSalt))
+            if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password,userToCheck.Data.PasswordHash,userToCheck.Data.PasswordSalt))
             {
                 return new ErrorDataResult<User>(Messages.PasswordError);
             }
 
-            return new SuccessDataResult<User>(userToCheck,Messages.SuccessfulLogin);
+            return new SuccessDataResult<User>(userToCheck.Data,Messages.SuccessfulLogin);
         }
 
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
@@ -59,10 +59,29 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(user, Messages.UserRegistered);
         
         }
+        public IResult UpdatePassword(UserForRegisterDto userForRegisterDto,string password,int userId)
+        {
+            byte[] passwordHash, passwordSalt;
+            HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
+            var user = new User
+            {
+                Id = userId,
+                FirstName=userForRegisterDto.FirstName,
+                LastName=userForRegisterDto.LastName,
+                Email=userForRegisterDto.Email,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                Status=true
+            };
+
+            _userService.Update(user);
+            return new SuccessResult("Parola Değiştirildi");
+        }
 
         public IResult UserExists(string email)
         {
-            if (_userService.GetByMail(email)!=null)
+            var result = _userService.GetByMail(email);
+            if (result.Data!=null)
             {
                 return new ErrorResult(Messages.UserExistError);
             }

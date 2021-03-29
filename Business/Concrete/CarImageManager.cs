@@ -24,7 +24,7 @@ namespace Business.Concrete
             _carImageDal = carImageDal;
         }
         [CacheRemoveAspect("ICarImageService.Get")]
-        //[SecuredOperation("admin")]
+        [SecuredOperation("admin")]
         public IResult Add(IFormFile imageFile,CarImage carImage)
         {
             var defaultImageFile = _carImageDal.Get(ci =>ci.CarId==carImage.CarId && ci.ImagePath == DefaultImageFile.FilePath + DefaultImageFile.FileName);
@@ -40,7 +40,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
         [CacheRemoveAspect("ICarImageService.Get")]
-        //[SecuredOperation("admin")]
+        [SecuredOperation("admin")]
         public IResult Delete(CarImage carImage)
         {
             var imageToDelete = _carImageDal.Get(ci => ci.CarImageId == carImage.CarImageId);
@@ -63,7 +63,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(b => b.CarId == carId));
         }
         [CacheRemoveAspect("ICarImageService.Get")]
-        //[SecuredOperation("admin")]
+        [SecuredOperation("admin")]
         public IResult Update(IFormFile imageFile,CarImage carImage)
         {
             var imageToDelete = _carImageDal.Get(ci => ci.CarImageId == carImage.CarImageId);

@@ -1,8 +1,11 @@
 ﻿using Business.Abstract;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Results;
 using Core.Utilities.Business;
 using DataAccess.Abstract;
 using Entities.Concrete;
+
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -32,6 +35,35 @@ namespace Business.Concrete
 
         }
 
+        [ValidationAspect(typeof(CreditCardValidator))]
+        public IResult Add(CreditCard creditCard)
+        {
+            _creditCardDal.Add(creditCard);
+            return new SuccessResult();
+        }
+        [ValidationAspect(typeof(CreditCardValidator))]
+        public IResult Update(CreditCard creditCard)
+        {
+            _creditCardDal.Update(creditCard);
+            return new SuccessResult();
+        }
+        public IResult Delete(CreditCard creditCard)
+        {
+            _creditCardDal.Delete(creditCard);
+            return new SuccessResult();
+        }
+        public IDataResult<List<CreditCard>> GetAll()
+        {
+            
+            return new SuccessDataResult<List<CreditCard>>(_creditCardDal.GetAll());
+        }
+        public IDataResult<CreditCard> GetById(int creditCardId)
+        {
+
+            return new SuccessDataResult<CreditCard>(_creditCardDal.Get(c=>c.Id==creditCardId));
+        }
+        
+
         private IResult Verify(CreditCard creditCard)
         {
             var checkCard = _creditCardDal.Get(d => d.CardNumber == creditCard.CardNumber);
@@ -42,7 +74,7 @@ namespace Business.Concrete
             }
             if (checkCard.FirstName.ToUpper() != creditCard.FirstName.ToUpper() || checkCard.LastName.ToUpper() != creditCard.LastName.ToUpper() ||
                 checkCard.ExpYear != creditCard.ExpYear
-                || checkCard.ExpMonth != creditCard.ExpMonth || checkCard.CCV != creditCard.CCV)
+                || checkCard.ExpMonth != creditCard.ExpMonth || checkCard.CVV != creditCard.CVV)
             {
                 return new ErrorResult("Kart Bilgileriniz Yanlıştır !!!");
             }
@@ -50,6 +82,16 @@ namespace Business.Concrete
 
             return new SuccessResult();
 
+        }
+
+        public IDataResult<CreditCard> GetByCardNumber(string cardNumber)
+        {
+            return new SuccessDataResult<CreditCard>(_creditCardDal.Get(c => c.CardNumber == cardNumber));
+        }
+
+        public IDataResult<List<CreditCard>> GetCustomerCards(int customerId)
+        {
+            return new SuccessDataResult<List<CreditCard>>(_creditCardDal.GetAll(c=>c.CustomerId==customerId));
         }
     }
 }

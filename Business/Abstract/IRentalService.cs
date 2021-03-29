@@ -19,5 +19,9 @@ namespace Business.Abstract
 
         IResult CheckRentability(Rental rental);
 
+        IDataResult<List<RentalDetailDto>> GetInComingAppointments(int customerId);
+
+        IDataResult<List<RentalDetailDto>> PastAppointments(int customerId);
+
     }
 }
