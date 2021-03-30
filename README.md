@@ -24,7 +24,7 @@ RentACarProject, in short, is a system that provides rental services to its cust
   <ul>
    <li>Angular 11</li>
     <li>TypeScript</li>
-   <li>JavaScrip</li>
+   <li>JavaScript</li>
    <li>HTML5</li>
    <li>Bootstrap 5.0</li>
   <li>JQuery</li>
