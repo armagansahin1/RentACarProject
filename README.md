@@ -33,6 +33,9 @@ RentACarProject, in short, is a system that provides rental services to its cust
    <li>Fluent Validation</li>
    <li>Autofac</li>
   <li>Payment Simulation</li>
+  <li>Caching</li>
+  <li>Transaction</li>
+  
  </ul>
  
  ## Project Details
