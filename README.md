@@ -5,7 +5,7 @@
 
 
 # RentACarProject
-![index](https://r.resimlink.com/7RHGLepO.png)
+![index](https://i.hizliresim.com/ehLqJU.png)
 ## About The Project
 This project is a project that I developed in parallel during the software training carried out by Engin Demiroğ and that I created in accordance with SOLID principles in this process.
 RentACarProject, in short, is a system that provides rental services to its customers on the internet of any car rental company.
